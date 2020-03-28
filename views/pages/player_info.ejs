@@ -1,0 +1,89 @@
+<% include ../partials/header %>
+<% include ../partials/menu %>
+	<div class="container">
+		<br>
+		<div class="row">
+			<div class="col-4">
+				<div class="card">
+				  <% var image_src;
+				  if (!selected_player){
+					image_src = '../resources/img/helmet.jpg';
+				  }
+				  else{
+				  	image_src = selected_player.img_src;
+				  } %>
+				 <img class="card-img-top" id="player_img" src= "<%- image_src %>" alt="Image of Football Player">
+				  <div class="card-body mx-auto">
+					<form class="form" action="/player_info/select_player" method="get">
+						<select class="custom-select" name="player_choice" onchange="this.form.submit()">
+							
+							 <option selected disabled="disabled">Select Player</option>
+							 <% for(var i = 0; i < players.length; i++){ %>
+								<% var selected='';
+									if (selected_player && selected_player.id == players[i].id){
+										selected = 'selected';
+									} %>
+							 	<option <%= selected %> value=" <%= players[i].id %>"> <%= players[i].name %> </option>
+							 <% } %>
+						</select>
+					</form>
+				  </div>
+				</div>
+			</div>
+			<div class="col-8">
+				<div class="table-responsive"> <%
+					if(selected_player) {
+						var year = selected_player.year;
+						var major = selected_player.major;
+						var gamesplayed = selected_player.games_played;
+						var pass = selected_player.passing_yards;
+						var avgpass = (pass / selected_player.games_played).toFixed(0);
+						var rush = selected_player.rushing_yards;
+						var avgrush = (rush / selected_player.games_played).toFixed(0);
+						var rec = selected_player.receiving_yards;
+						var avgrec = (rec / selected_player.games_played).toFixed(0);
+					}
+					else{
+						var year = '';
+						var major = '';
+						var gamesplayed = '';
+						var pass = '';
+						var avgpass = '';
+						var rush = '';
+						var avgrush = '';
+						var rec = '';
+						var avgrec = '';
+					}
+					%>
+					<table class="table">
+						<tr>
+							<th>Year</th>
+							<td><%= year %></td>
+						</tr>
+						<tr>
+							<th>Major</th>
+							<td><%= major %></td>
+						</tr>
+						<tr>
+							<th>Games Played</th>
+							<td><%= gamesplayed %></td>
+						</tr>
+						<tr>
+							<td>Passing Yards: <%= pass %></td>
+							<td>Avg. Passing Yards: <%= avgpass %></td>
+						</tr>
+						<tr>
+							<td>Rushing Yards: <%= rush %></td>
+							<td>Avg. Rushing Yards: <%= avgrush %></td>
+						</tr>
+						<tr>
+							<td>Receiving Yards: <%= rec %></td>
+							<td>Avg. Receiving Yards: <%= avgrec %></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+  
+<% include ../partials/footer %>
